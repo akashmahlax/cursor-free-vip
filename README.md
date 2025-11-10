@@ -64,7 +64,7 @@ For optimal performance, run with privileges and always stay up to date.
 
 ## ✨ Features | 功能特點
 
-* Support Windows macOS and Linux systems<br>支持 Windows、macOS 和 Linux 系統<br>
+* Support Windows macOS and Linux systems <br> 支持 Windows、macOS 和 Linux 系統<br>
 
 * Reset Cursor's configuration<br>重置 Cursor 的配置<br>
 
