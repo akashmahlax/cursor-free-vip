@@ -14,6 +14,7 @@ import configparser
 import traceback
 from config import get_config
 import glob
+from cursor_path_detector import find_cursor_installation, get_workbench_path
 
 # Initialize colorama
 init()
@@ -52,6 +53,24 @@ def get_user_documents_path():
 def get_cursor_paths(translator=None) -> Tuple[str, str]:
     """ Get Cursor related paths"""
     system = platform.system()
+    
+    # Try auto-detection first
+    if translator:
+        print(f"{Fore.CYAN}{EMOJI['INFO']} Auto-detecting Cursor installation...{Style.RESET_ALL}")
+    
+    cursor_app_path = find_cursor_installation()
+    if cursor_app_path and os.path.exists(cursor_app_path):
+        if translator:
+            print(f"{Fore.GREEN}{EMOJI['SUCCESS']} Found Cursor at: {cursor_app_path}{Style.RESET_ALL}")
+        pkg_path = os.path.join(cursor_app_path, "package.json")
+        main_path = os.path.join(cursor_app_path, "out/main.js")
+        
+        if os.path.exists(pkg_path) and os.path.exists(main_path):
+            return (pkg_path, main_path)
+    
+    # Fall back to config-based detection
+    if translator:
+        print(f"{Fore.YELLOW}{EMOJI['INFO']} Auto-detection failed, using config file...{Style.RESET_ALL}")
     
     # Read config file
     config = configparser.ConfigParser()

@@ -1,0 +1,125 @@
+"""
+Example configuration file for cursor-free-vip
+Copy this to Documents/.cursor-free-vip/config.ini and customize
+"""
+
+[Chrome]
+# Default Google Chrome Path
+chromepath = C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[Turnstile]
+# Handle Turnstile Wait Time (seconds)
+handle_turnstile_time = 2
+# Handle Turnstile Random Time Range (format: min-max or min,max)
+handle_turnstile_random_time = 1-3
+
+[OSPaths]
+# These paths are auto-detected but can be overridden
+# storage_path = 
+# sqlite_path = 
+# machine_id_path = 
+
+[Timing]
+# All timing values in seconds, can use ranges (e.g., 0.1-0.8)
+min_random_time = 0.1
+max_random_time = 0.8
+page_load_wait = 0.1-0.8
+input_wait = 0.3-0.8
+submit_wait = 0.5-1.5
+verification_code_input = 0.1-0.3
+verification_success_wait = 2-3
+verification_retry_wait = 2-3
+email_check_initial_wait = 4-6
+email_refresh_wait = 2-4
+settings_page_load_wait = 1-2
+failed_retry_time = 0.5-1
+retry_interval = 8-12
+max_timeout = 160
+
+[Utils]
+# Enable/disable update checking on startup
+enabled_update_check = True
+# Force update config file (will backup old config)
+enabled_force_update = False
+# Show account information in menu
+enabled_account_info = True
+
+[OAuth]
+# Show browser selection alert
+show_selection_alert = False
+# OAuth timeout in seconds
+timeout = 120
+# Maximum authentication attempts
+max_attempts = 3
+
+[Token]
+# Token refresh server URL
+refresh_server = https://token.cursorpro.com.cn
+# Enable token refresh functionality
+enable_refresh = True
+
+[Language]
+# Leave empty for auto-detection, or set to: en, zh_cn, zh_tw, vi, etc.
+current_language = 
+# Fallback language if translation not found
+fallback_language = en
+# Auto update language files
+auto_update_languages = True
+
+[TempMailPlus]
+# Enable TempMailPlus for email verification
+enabled = false
+# Your TempMailPlus email address
+email = 
+# Your TempMailPlus PIN code
+epin = 
+
+[Browser]
+# Default browser: chrome, firefox, edge, brave, opera, operagx
+default_browser = chrome
+
+# Browser executable paths (auto-detected if not specified)
+chrome_path = 
+edge_path = 
+firefox_path = 
+brave_path = 
+opera_path = 
+operagx_path = 
+
+# WebDriver paths (auto-detected if not specified)
+chrome_driver_path = 
+edge_driver_path = 
+firefox_driver_path = 
+brave_driver_path = 
+opera_driver_path = 
+operagx_driver_path = 
+
+# Windows-specific paths (auto-detected)
+[WindowsPaths]
+# storage_path = 
+# sqlite_path = 
+# machine_id_path = 
+# cursor_path = 
+# updater_path = 
+# update_yml_path = 
+# product_json_path = 
+
+# macOS-specific paths (auto-detected)
+[MacPaths]
+# storage_path = 
+# sqlite_path = 
+# machine_id_path = 
+# cursor_path = 
+# updater_path = 
+# update_yml_path = 
+# product_json_path = 
+
+# Linux-specific paths (auto-detected)
+[LinuxPaths]
+# storage_path = 
+# sqlite_path = 
+# machine_id_path = 
+# cursor_path = 
+# updater_path = 
+# update_yml_path = 
+# product_json_path = 

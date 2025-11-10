@@ -7,6 +7,7 @@ import subprocess
 from config import get_config
 import re
 import tempfile
+from cursor_path_detector import find_cursor_installation
 
 # Initialize colorama
 init()
@@ -27,6 +28,34 @@ class AutoUpdateDisabler:
     def __init__(self, translator=None):
         self.translator = translator
         self.system = platform.system()
+        
+        # Try auto-detection first
+        cursor_app_path = find_cursor_installation()
+        if cursor_app_path and os.path.exists(cursor_app_path):
+            if translator:
+                print(f"{Fore.CYAN}{EMOJI['INFO']} Auto-detected Cursor at: {cursor_app_path}{Style.RESET_ALL}")
+            
+            # Set paths based on auto-detected location
+            cursor_dir = os.path.dirname(cursor_app_path)  # resources folder
+            
+            if self.system == "Windows":
+                cursor_parent = os.path.dirname(os.path.dirname(cursor_dir))  # Cursor folder
+                self.updater_path = os.path.join(os.path.dirname(cursor_parent), "cursor-updater")
+                self.update_yml_path = os.path.join(cursor_dir, "app-update.yml")
+                self.product_json_path = os.path.join(cursor_app_path, "product.json")
+            elif self.system == "Darwin":
+                self.updater_path = os.path.expanduser("~/Library/Application Support/cursor-updater")
+                self.update_yml_path = os.path.join(cursor_dir, "app-update.yml")
+                self.product_json_path = os.path.join(cursor_app_path, "product.json")
+            elif self.system == "Linux":
+                self.updater_path = os.path.expanduser("~/.config/cursor-updater")
+                self.update_yml_path = os.path.join(cursor_dir, "app-update.yml")
+                self.product_json_path = os.path.join(cursor_app_path, "product.json")
+            return
+        
+        # Fall back to config file
+        if translator:
+            print(f"{Fore.YELLOW}{EMOJI['INFO']} Using config file paths...{Style.RESET_ALL}")
         
         # Get path from configuration file
         config = get_config(translator)

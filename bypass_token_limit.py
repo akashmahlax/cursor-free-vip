@@ -8,6 +8,7 @@ import configparser
 import sys
 from config import get_config
 from datetime import datetime
+from cursor_path_detector import find_cursor_installation, get_workbench_path
 
 # Initialize colorama
 init()
@@ -45,7 +46,23 @@ def get_user_documents_path():
      
 
 def get_workbench_cursor_path(translator=None) -> str:
-    """Get Cursor workbench.desktop.main.js path"""
+    """Get Cursor workbench.desktop.main.js path with automatic detection"""
+    
+    # Try automatic detection first
+    print(f"{Fore.CYAN}{EMOJI['INFO']} Auto-detecting Cursor installation...{Style.RESET_ALL}")
+    cursor_app_path = find_cursor_installation()
+    
+    if cursor_app_path and os.path.exists(cursor_app_path):
+        workbench_path = get_workbench_path(cursor_app_path)
+        if os.path.exists(workbench_path):
+            print(f"{Fore.GREEN}{EMOJI['SUCCESS']} Found Cursor at: {cursor_app_path}{Style.RESET_ALL}")
+            return workbench_path
+        else:
+            print(f"{Fore.YELLOW}{EMOJI['WARNING']} Workbench file not found at detected path{Style.RESET_ALL}")
+    
+    # Fallback to config-based detection
+    print(f"{Fore.YELLOW}{EMOJI['WARNING']} Auto-detection failed, trying config paths...{Style.RESET_ALL}")
+    
     system = platform.system()
 
     # Read configuration

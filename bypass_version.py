@@ -8,6 +8,7 @@ from colorama import Fore, Style, init
 import sys
 import traceback
 from utils import get_user_documents_path
+from cursor_path_detector import find_cursor_installation
 
 # Initialize colorama
 init()
@@ -27,6 +28,22 @@ EMOJI = {
 def get_product_json_path(translator=None):
     """Get Cursor product.json path"""
     system = platform.system()
+    
+    # Try auto-detection first
+    if translator:
+        print(f"{Fore.CYAN}{EMOJI['INFO']} Auto-detecting Cursor installation...{Style.RESET_ALL}")
+    
+    cursor_app_path = find_cursor_installation()
+    if cursor_app_path and os.path.exists(cursor_app_path):
+        product_json_path = os.path.join(cursor_app_path, "product.json")
+        if os.path.exists(product_json_path):
+            if translator:
+                print(f"{Fore.GREEN}{EMOJI['SUCCESS']} Found product.json at: {product_json_path}{Style.RESET_ALL}")
+            return product_json_path
+    
+    # Fall back to config-based detection
+    if translator:
+        print(f"{Fore.YELLOW}{EMOJI['INFO']} Using config file paths...{Style.RESET_ALL}")
     
     # Read configuration
     config_dir = os.path.join(get_user_documents_path(), ".cursor-free-vip")
